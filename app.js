@@ -83,13 +83,13 @@ const createSession = function(id, description) {
     console.log('QR RECEIVED', qr);
     qrcode.toDataURL(qr, (err, url) => {
       io.emit('qr', { id: id, src: url });
-      io.emit('message', { id: id, text: 'QR Code received, scan please!' });
+      io.emit('message', { id: id, text: 'QR Code criado, scan por favor!' });
     });
   });
 
   client.on('ready', () => {
     io.emit('ready', { id: id });
-    io.emit('message', { id: id, text: 'Whatsapp is ready!' });
+    io.emit('message', { id: id, text: 'Whatsapp foi conectado!' });
 
     const savedSessions = getSessionsFile();
     const sessionIndex = savedSessions.findIndex(sess => sess.id == id);
@@ -99,7 +99,7 @@ const createSession = function(id, description) {
 
   client.on('authenticated', (session) => {
     io.emit('authenticated', { id: id });
-    io.emit('message', { id: id, text: 'Whatsapp is authenticated!' });
+    io.emit('message', { id: id, text: 'Whatsapp está autenticado!' });
     sessionCfg = session;
     fs.writeFile(SESSION_FILE_PATH, JSON.stringify(session), function(err) {
       if (err) {
@@ -109,11 +109,11 @@ const createSession = function(id, description) {
   });
 
   client.on('auth_failure', function(session) {
-    io.emit('message', { id: id, text: 'Auth failure, restarting...' });
+    io.emit('message', { id: id, text: 'Autenticação falhou, restarting...' });
   });
 
   client.on('disconnected', (reason) => {
-    io.emit('message', { id: id, text: 'Whatsapp is disconnected!' });
+    io.emit('message', { id: id, text: 'Whatsapp foi desconectado!' });
     fs.unlinkSync(SESSION_FILE_PATH, function(err) {
         if(err) return console.log(err);
         console.log('Session file deleted!');
@@ -184,13 +184,13 @@ io.on('connection', function(socket) {
 //     console.log('QR RECEIVED', qr);
 //     qrcode.toDataURL(qr, (err, url) => {
 //       socket.emit('qr', url);
-//       socket.emit('message', 'QR Code received, scan please!');
+//       socket.emit('message', 'QR Code criado, scan por favor!');
 //     });
 //   });
 
 //   client.on('ready', () => {
-//     socket.emit('ready', 'Whatsapp is ready!');
-//     socket.emit('message', 'Whatsapp is ready!');
+//     socket.emit('ready', 'Whatsapp está pronto!');
+//     socket.emit('message', 'Whatsapp está pronto!');
 //   });
 
 //   client.on('authenticated', (session) => {
