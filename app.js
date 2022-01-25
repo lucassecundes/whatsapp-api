@@ -18,7 +18,7 @@ app.use(express.urlencoded({
 }));
 
 app.get('/', (req, res) => {
-  res.sendFile('index-multiple-device.html', {
+  res.sendFile('index.html', {
     root: __dirname
   });
 });
